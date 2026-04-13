@@ -52,7 +52,8 @@ const leaders = [
     title: "Customer Success Manager",
     description: "Santiago has been making clients his top priority for over a decade, approaching every relationship with grace and humility. His unwavering dedication to customer success ensures that every institution partnering with Aria receives not just a service, but a genuine commitment to their needs. Santiago's ability to listen, anticipate, and deliver has made him a trusted point of contact for Aria's most valued partners.",
     initials: "SA",
-    accentColor: "bg-primary"
+    accentColor: "bg-primary",
+    photo: "/santiago-assis.jpg"
   }
 ];
 
