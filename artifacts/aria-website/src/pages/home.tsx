@@ -198,16 +198,12 @@ export default function Home() {
           >
             <motion.div variants={fadeUp} className="flex items-center gap-4 mb-8">
               <div className="h-[1px] w-12 bg-accent"></div>
-              <span className="text-accent uppercase tracking-[0.3em] text-sm font-semibold">The Premier Full Service Language Agency</span>
+              <span className="text-accent uppercase tracking-[0.3em] text-sm font-semibold">The Premier Global Full Service Language Agency</span>
             </motion.div>
 
-            <motion.p variants={fadeUp} className="text-3xl md:text-4xl lg:text-5xl font-serif italic text-accent mb-6">
-              We Speak Your Language.
-            </motion.p>
-            
-            <motion.h1 variants={fadeUp} className="text-5xl md:text-7xl lg:text-8xl font-serif text-white leading-[1.05] mb-8">
-              Authority in Every <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/60">Syllable.</span>
+            <motion.h1 variants={fadeUp} className="font-serif mb-8">
+              <span className="block text-6xl md:text-8xl lg:text-[7rem] italic text-accent leading-[1.1] mb-2">We Speak Your Language.</span>
+              <span className="block text-3xl md:text-4xl lg:text-5xl text-white/70 font-light tracking-wide">Authority in Every Syllable.</span>
             </motion.h1>
             
             <motion.p variants={fadeUp} className="text-lg md:text-2xl text-white/70 font-light max-w-2xl leading-relaxed mb-12 border-l-2 border-primary pl-6">
