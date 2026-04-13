@@ -198,7 +198,7 @@ export default function Home() {
           >
             <motion.div variants={fadeUp} className="flex items-center gap-4 mb-8">
               <div className="h-[1px] w-12 bg-accent"></div>
-              <span className="text-accent uppercase tracking-[0.3em] text-sm font-semibold">Premier Full Service Language Agency</span>
+              <span className="text-accent uppercase tracking-[0.3em] text-sm font-semibold">The Premier Full Service Language Agency</span>
             </motion.div>
             
             <motion.h1 variants={fadeUp} className="text-5xl md:text-7xl lg:text-8xl font-serif text-white leading-[1.05] mb-8">
