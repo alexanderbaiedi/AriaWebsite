@@ -200,6 +200,10 @@ export default function Home() {
               <div className="h-[1px] w-12 bg-accent"></div>
               <span className="text-accent uppercase tracking-[0.3em] text-sm font-semibold">The Premier Full Service Language Agency</span>
             </motion.div>
+
+            <motion.p variants={fadeUp} className="text-3xl md:text-4xl lg:text-5xl font-serif italic text-accent mb-6">
+              We Speak Your Language.
+            </motion.p>
             
             <motion.h1 variants={fadeUp} className="text-5xl md:text-7xl lg:text-8xl font-serif text-white leading-[1.05] mb-8">
               Authority in Every <br />
@@ -207,7 +211,7 @@ export default function Home() {
             </motion.h1>
             
             <motion.p variants={fadeUp} className="text-lg md:text-2xl text-white/70 font-light max-w-2xl leading-relaxed mb-12 border-l-2 border-primary pl-6">
-              Delivering precision interpretation in 100+ languages. Where cultural competency meets uncompromising institutional standards. <strong className="text-white font-medium">We Speak Your Language.</strong>
+              Delivering precision interpretation in 100+ languages. Where cultural competency meets uncompromising institutional standards.
             </motion.p>
             
             <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-6">
