@@ -1,524 +1,664 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { Globe2, Scale, HeartPulse, Building2, CheckCircle2, ChevronRight, Phone, Mail, MapPin } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { Link } from "wouter";
+import { 
+  Building2, 
+  Scale, 
+  HeartPulse, 
+  Car, 
+  Globe2, 
+  CheckCircle2, 
+  ShieldCheck, 
+  Award, 
+  FileText, 
+  MapPin, 
+  Phone, 
+  Mail, 
+  ChevronRight,
+  Menu,
+  X
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
 
-const fadeIn = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+// --- ANIMATION VARIANTS ---
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }
 };
 
-const stagger = {
+const staggerContainer = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.2 }
+    transition: { staggerChildren: 0.15 }
   }
 };
 
-export default function Home() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+const AnimatedCounter = ({ from, to, duration = 2, label, suffix = "" }: { from: number, to: number, duration?: number, label: string, suffix?: string }) => {
+  const [count, setCount] = useState(from);
+  const [isInView, setIsInView] = useState(false);
 
-  const scrollToSection = (id: string) => {
+  useEffect(() => {
+    if (!isInView) return;
+    let startTimestamp: number | null = null;
+    const step = (timestamp: number) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / (duration * 1000), 1);
+      // easeOutExpo
+      const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      setCount(Math.floor(easeProgress * (to - from) + from));
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      }
+    };
+    window.requestAnimationFrame(step);
+  }, [isInView, from, to, duration]);
+
+  return (
+    <div 
+      className="flex flex-col items-center justify-center border-l border-white/10 first:border-0 py-8 px-4"
+      ref={(el) => {
+        if (!el) return;
+        const observer = new IntersectionObserver(([entry]) => {
+          if (entry.isIntersecting) setIsInView(true);
+        }, { threshold: 0.5 });
+        observer.observe(el);
+      }}
+    >
+      <div className="text-5xl md:text-7xl font-serif font-semibold text-white mb-2 tracking-tight">
+        {count}{suffix}
+      </div>
+      <div className="text-sm md:text-base text-white/60 uppercase tracking-widest font-medium">
+        {label}
+      </div>
+    </div>
+  );
+};
+
+export default function Home() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { scrollYProgress } = useScroll();
+  const yHero = useTransform(scrollYProgress, [0, 1], [0, 300]);
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+      el.scrollIntoView({ behavior: "smooth" });
     }
-    setIsMenuOpen(false);
+    setIsMobileMenuOpen(false);
   };
 
   return (
-    <div className="min-h-[100dvh] w-full bg-background font-sans text-foreground overflow-x-hidden">
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border transition-all">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => window.scrollTo(0,0)} data-testid="link-home-logo">
-            <img src="/aria-logo.jpg" alt="Aria Language Services Logo" className="h-12 w-auto object-contain" />
+    <div className="min-h-[100dvh] w-full bg-background font-sans text-foreground overflow-x-hidden selection:bg-primary selection:text-white">
+      {/* 1. NAVIGATION */}
+      <header 
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b ${
+          isScrolled ? "bg-background/95 backdrop-blur-md border-border py-4 shadow-sm" : "bg-transparent border-transparent py-6"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+          <div 
+            className="flex items-center gap-4 cursor-pointer group" 
+            onClick={() => window.scrollTo(0,0)}
+            data-testid="nav-logo"
+          >
+            <img src="/aria-logo.jpg" alt="Aria Language Services Logo" className="h-10 w-auto object-contain transition-transform group-hover:scale-105" />
             <div className="flex flex-col">
-              <span className="font-serif font-bold text-xl text-primary leading-tight">Aria</span>
-              <span className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">Language Services</span>
+              <span className={`font-serif font-bold text-xl leading-none tracking-wide ${isScrolled ? "text-foreground" : "text-white"}`}>ARIA</span>
+              <span className={`text-[10px] uppercase tracking-[0.2em] font-semibold mt-1 ${isScrolled ? "text-primary" : "text-primary"}`}>Language Services</span>
             </div>
           </div>
           
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium">
-            <button onClick={() => scrollToSection('services')} className="hover:text-primary transition-colors" data-testid="nav-services">Services</button>
-            <button onClick={() => scrollToSection('why-us')} className="hover:text-primary transition-colors" data-testid="nav-why-us">Why Choose Us</button>
-            <button onClick={() => scrollToSection('languages')} className="hover:text-primary transition-colors" data-testid="nav-languages">Languages</button>
-            <button onClick={() => scrollToSection('about')} className="hover:text-primary transition-colors" data-testid="nav-about">About</button>
-            <Button onClick={() => scrollToSection('contact')} className="rounded-full px-6" data-testid="btn-get-quote">Get a Quote</Button>
+          <nav className="hidden lg:flex items-center gap-10">
+            {["Services", "Why Aria", "Languages", "Case Studies", "About"].map((item) => (
+              <button 
+                key={item}
+                onClick={() => scrollTo(item.toLowerCase().replace(" ", "-"))} 
+                className={`text-sm font-medium tracking-wide transition-colors hover:text-primary ${isScrolled ? "text-foreground/80" : "text-white/90"}`}
+                data-testid={`nav-${item.toLowerCase().replace(" ", "-")}`}
+              >
+                {item}
+              </button>
+            ))}
+          </nav>
+
+          <div className="hidden lg:block">
+            <Button 
+              onClick={() => scrollTo("contact")}
+              className={`rounded-none px-8 py-6 text-sm uppercase tracking-widest font-semibold transition-all ${
+                isScrolled 
+                  ? "bg-primary text-white hover:bg-primary/90" 
+                  : "bg-white text-primary hover:bg-white/90"
+              }`}
+              data-testid="nav-cta"
+            >
+              Request a Consultation
+            </Button>
           </div>
 
-          <button className="md:hidden p-2 text-foreground" onClick={() => setIsMenuOpen(!isMenuOpen)} data-testid="btn-mobile-menu">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="4" y1="12" x2="20" y2="12"></line>
-              <line x1="4" y1="6" x2="20" y2="6"></line>
-              <line x1="4" y1="18" x2="20" y2="18"></line>
-            </svg>
+          <button 
+            className="lg:hidden p-2 text-foreground"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            data-testid="nav-mobile-toggle"
+          >
+            {isMobileMenuOpen ? <X className={isScrolled ? "text-foreground" : "text-white"} /> : <Menu className={isScrolled ? "text-foreground" : "text-white"} />}
           </button>
         </div>
+      </header>
 
-        {/* Mobile menu */}
-        {isMenuOpen && (
-          <div className="md:hidden absolute top-20 left-0 w-full bg-background border-b border-border p-6 flex flex-col gap-4 shadow-lg">
-            <button onClick={() => scrollToSection('services')} className="text-left font-medium py-2 border-b border-border/50" data-testid="mobile-nav-services">Services</button>
-            <button onClick={() => scrollToSection('why-us')} className="text-left font-medium py-2 border-b border-border/50" data-testid="mobile-nav-why-us">Why Choose Us</button>
-            <button onClick={() => scrollToSection('languages')} className="text-left font-medium py-2 border-b border-border/50" data-testid="mobile-nav-languages">Languages</button>
-            <button onClick={() => scrollToSection('about')} className="text-left font-medium py-2 border-b border-border/50" data-testid="mobile-nav-about">About</button>
-            <Button onClick={() => scrollToSection('contact')} className="w-full mt-2" data-testid="mobile-btn-get-quote">Get a Quote</Button>
-          </div>
-        )}
-      </nav>
-
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden flex items-center min-h-[90vh]">
-        <div className="absolute inset-0 z-0">
-          <img src="/hero-bg.png" alt="Abstract cultural bridge" className="w-full h-full object-cover object-center opacity-20" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/40"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
-        </div>
-        
-        <div className="max-w-7xl mx-auto px-6 relative z-10 w-full">
+      <AnimatePresence>
+        {isMobileMenuOpen && (
           <motion.div 
-            initial="hidden"
-            animate="visible"
-            variants={stagger}
-            className="max-w-3xl"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed inset-0 z-40 bg-background pt-24 px-6 flex flex-col"
           >
-            <motion.div variants={fadeIn} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-medium text-sm mb-6 border border-primary/20">
-              <Globe2 className="w-4 h-4" />
-              <span>Premier Middle Eastern Language Agency</span>
+            <nav className="flex flex-col gap-6 text-2xl font-serif mt-10">
+              {["Services", "Why Aria", "Languages", "Case Studies", "About", "Contact"].map((item) => (
+                <button 
+                  key={item}
+                  onClick={() => scrollTo(item.toLowerCase().replace(" ", "-"))} 
+                  className="text-left border-b border-border pb-4 hover:text-primary transition-colors"
+                >
+                  {item}
+                </button>
+              ))}
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 2. HERO */}
+      <section className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden bg-secondary">
+        <motion.div style={{ y: yHero }} className="absolute inset-0 z-0">
+          <img src="/hero-bg.png" alt="Abstract Persian geometric pattern" className="w-full h-full object-cover object-center opacity-40 mix-blend-luminosity" />
+          <div className="absolute inset-0 bg-gradient-to-b from-secondary/80 via-secondary/50 to-secondary"></div>
+        </motion.div>
+        
+        <div className="max-w-7xl mx-auto px-6 relative z-10 w-full pt-32 pb-20">
+          <motion.div 
+            initial="hidden" animate="visible" variants={staggerContainer}
+            className="max-w-4xl"
+          >
+            <motion.div variants={fadeUp} className="flex items-center gap-4 mb-8">
+              <div className="h-[1px] w-12 bg-accent"></div>
+              <span className="text-accent uppercase tracking-[0.3em] text-sm font-semibold">The Premier Middle Eastern Language Agency</span>
             </motion.div>
             
-            <motion.h1 variants={fadeIn} className="text-5xl md:text-7xl font-serif font-bold text-foreground leading-[1.1] mb-6">
-              We Speak Your <span className="text-primary italic">Language.</span>
+            <motion.h1 variants={fadeUp} className="text-5xl md:text-7xl lg:text-8xl font-serif text-white leading-[1.05] mb-8">
+              Authority in Every <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/60">Syllable.</span>
             </motion.h1>
             
-            <motion.p variants={fadeIn} className="text-xl md:text-2xl text-muted-foreground mb-10 leading-relaxed max-w-2xl font-light">
-              The only agency combining 100+ languages with unmatched cultural competency. We translate meaning, not just words.
+            <motion.p variants={fadeUp} className="text-lg md:text-2xl text-white/70 font-light max-w-2xl leading-relaxed mb-12 border-l-2 border-primary pl-6">
+              Delivering precision interpretation in 100+ languages. Where cultural competency meets uncompromising institutional standards. <strong className="text-white font-medium">We Speak Your Language.</strong>
             </motion.p>
             
-            <motion.div variants={fadeIn} className="flex flex-wrap gap-4">
-              <Button size="lg" onClick={() => scrollToSection('contact')} className="rounded-full px-8 text-base h-14 bg-primary hover:bg-primary/90 text-primary-foreground" data-testid="hero-btn-quote">
-                Get a Quote Now
+            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-6">
+              <Button size="lg" onClick={() => scrollTo("contact")} className="rounded-none px-10 h-16 text-sm uppercase tracking-widest font-semibold bg-primary hover:bg-primary/90 text-white" data-testid="hero-cta-consultation">
+                Request a Consultation
               </Button>
-              <Button size="lg" variant="outline" onClick={() => scrollToSection('services')} className="rounded-full px-8 text-base h-14 bg-background/50 backdrop-blur" data-testid="hero-btn-services">
-                Explore Our Services
+              <Button size="lg" variant="outline" onClick={() => scrollTo("services")} className="rounded-none px-10 h-16 text-sm uppercase tracking-widest font-semibold border-white/20 text-white hover:bg-white hover:text-secondary bg-transparent backdrop-blur-sm" data-testid="hero-cta-services">
+                Explore Expertise
               </Button>
             </motion.div>
           </motion.div>
         </div>
       </section>
 
-      {/* Services Section */}
-      <section id="services" className="py-24 bg-secondary/30 relative">
+      {/* 3. TRUSTED BY */}
+      <section className="py-12 bg-white border-b border-border">
         <div className="max-w-7xl mx-auto px-6">
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={fadeIn}
-            className="text-center max-w-2xl mx-auto mb-16"
-          >
-            <h2 className="text-3xl md:text-5xl font-serif font-bold mb-6 text-foreground">Critical Communication, <br/>Expertly Handled</h2>
-            <p className="text-lg text-muted-foreground">From the courtroom to the clinic, we provide certified interpreters who understand the gravity of every interaction.</p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
-            {/* Medical Card */}
-            <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeIn}
-              className="bg-card rounded-2xl overflow-hidden border border-border shadow-sm group hover:shadow-md transition-all"
-            >
-              <div className="aspect-[16/9] w-full relative overflow-hidden">
-                <img src="/service-medical.png" alt="Medical Interpretation" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+          <p className="text-center text-sm uppercase tracking-widest font-semibold text-muted-foreground mb-8">Trusted by Leading Institutions</p>
+          <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-60 grayscale">
+            {["Regional Medical Center", "Superior Court of California", "Dept of Health & Human Services", "Veterans Affairs", "State Bar Association"].map((logo, i) => (
+              <div key={i} className="font-serif font-bold text-xl md:text-2xl text-foreground flex items-center">
+                {logo}
               </div>
-              <div className="p-8">
-                <HeartPulse className="w-10 h-10 text-primary mb-4" />
-                <h3 className="text-2xl font-serif font-bold mb-3">Medical Interpretation</h3>
-                <p className="text-muted-foreground mb-6 leading-relaxed">Certified interpreters for hospitals, clinics, and patient consultations. We ensure complete medical accuracy while maintaining the cultural sensitivity required for compassionate care.</p>
-                <ul className="space-y-2 mb-6">
-                  <li className="flex items-center gap-2 text-sm font-medium"><CheckCircle2 className="w-4 h-4 text-primary" /> Patient consultations</li>
-                  <li className="flex items-center gap-2 text-sm font-medium"><CheckCircle2 className="w-4 h-4 text-primary" /> Emergency room support</li>
-                  <li className="flex items-center gap-2 text-sm font-medium"><CheckCircle2 className="w-4 h-4 text-primary" /> Mental health sessions</li>
-                </ul>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 4. IMPACT NUMBERS */}
+      <section className="bg-secondary py-24 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-5 bg-[url('/cultural-abstract.png')] bg-cover bg-center"></div>
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <AnimatedCounter from={0} to={15000} suffix="+" label="Appointments Annually" />
+            <AnimatedCounter from={0} to={100} suffix="+" label="Languages Supported" />
+            <AnimatedCounter from={0} to={98} suffix=".7%" label="Client Satisfaction" />
+            <AnimatedCounter from={0} to={500} suffix="+" label="Certified Interpreters" />
+          </div>
+        </div>
+      </section>
+
+      {/* 5. SERVICES */}
+      <section id="services" className="py-32 bg-background">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+            <div className="max-w-2xl">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="h-[1px] w-8 bg-primary"></div>
+                <span className="text-primary uppercase tracking-[0.2em] text-xs font-bold">Practice Areas</span>
+              </div>
+              <h2 className="text-4xl md:text-6xl font-serif text-foreground leading-tight">Critical Communication, <br />Expertly Handled.</h2>
+            </div>
+            <p className="text-muted-foreground max-w-md leading-relaxed">
+              From the courtroom to the clinic, we provide certified interpreters who understand the gravity of every institutional interaction.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 mb-8">
+            {/* Medical */}
+            <motion.div 
+              initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+              className="group relative h-[500px] overflow-hidden bg-secondary"
+            >
+              <img src="/service-medical.png" alt="Medical Interpretation" className="absolute inset-0 w-full h-full object-cover opacity-60 transition-transform duration-1000 group-hover:scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/40 to-transparent opacity-90"></div>
+              <div className="absolute inset-0 p-10 flex flex-col justify-end">
+                <HeartPulse className="w-10 h-10 text-accent mb-6" />
+                <h3 className="text-3xl font-serif text-white mb-4">Medical Interpretation</h3>
+                <p className="text-white/80 mb-8 leading-relaxed max-w-md">Certified interpreters for hospitals, clinics, and patient consultations. We ensure absolute medical accuracy paired with necessary cultural sensitivity.</p>
+                <div className="flex flex-col gap-2">
+                  {["Patient consultations", "Emergency room support", "Mental health sessions"].map((item, i) => (
+                    <div key={i} className="flex items-center gap-3 text-white/90 text-sm font-medium">
+                      <CheckCircle2 className="w-4 h-4 text-accent" /> {item}
+                    </div>
+                  ))}
+                </div>
               </div>
             </motion.div>
 
-            {/* Judicial Card */}
+            {/* Judicial */}
             <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeIn}
-              className="bg-card rounded-2xl overflow-hidden border border-border shadow-sm group hover:shadow-md transition-all"
+              initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}
+              className="group relative h-[500px] overflow-hidden bg-secondary"
             >
-              <div className="aspect-[16/9] w-full relative overflow-hidden">
-                <img src="/service-judicial.png" alt="Judicial Interpretation" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-              </div>
-              <div className="p-8">
-                <Scale className="w-10 h-10 text-primary mb-4" />
-                <h3 className="text-2xl font-serif font-bold mb-3">Judicial & Legal Interpretation</h3>
-                <p className="text-muted-foreground mb-6 leading-relaxed">Court-certified interpreters for proceedings, depositions, and immigration hearings. We deliver precise legal translation that withstands the highest scrutiny of the justice system.</p>
-                <ul className="space-y-2 mb-6">
-                  <li className="flex items-center gap-2 text-sm font-medium"><CheckCircle2 className="w-4 h-4 text-primary" /> Court proceedings & trials</li>
-                  <li className="flex items-center gap-2 text-sm font-medium"><CheckCircle2 className="w-4 h-4 text-primary" /> Depositions & mediation</li>
-                  <li className="flex items-center gap-2 text-sm font-medium"><CheckCircle2 className="w-4 h-4 text-primary" /> Immigration hearings</li>
-                </ul>
+              <img src="/service-judicial.png" alt="Judicial Interpretation" className="absolute inset-0 w-full h-full object-cover opacity-60 transition-transform duration-1000 group-hover:scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/40 to-transparent opacity-90"></div>
+              <div className="absolute inset-0 p-10 flex flex-col justify-end">
+                <Scale className="w-10 h-10 text-accent mb-6" />
+                <h3 className="text-3xl font-serif text-white mb-4">Judicial & Legal</h3>
+                <p className="text-white/80 mb-8 leading-relaxed max-w-md">Court-certified interpreters for proceedings, depositions, and hearings. We deliver precise legal translation that withstands the highest scrutiny.</p>
+                <div className="flex flex-col gap-2">
+                  {["Court proceedings & trials", "Depositions & mediation", "Immigration hearings"].map((item, i) => (
+                    <div key={i} className="flex items-center gap-3 text-white/90 text-sm font-medium">
+                      <CheckCircle2 className="w-4 h-4 text-accent" /> {item}
+                    </div>
+                  ))}
+                </div>
               </div>
             </motion.div>
           </div>
 
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={stagger}
-            className="grid md:grid-cols-3 gap-6"
-          >
-            <div className="bg-background border border-border p-6 rounded-xl">
-              <Building2 className="w-8 h-8 text-primary mb-4" />
-              <h4 className="font-bold text-lg mb-2">Nurse Case Management</h4>
-              <p className="text-sm text-muted-foreground">Bilingual case management support connecting healthcare providers with non-English speaking patients.</p>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white p-10 border border-border flex flex-col items-start hover:border-primary transition-colors">
+              <Building2 className="w-8 h-8 text-primary mb-6" />
+              <h4 className="text-xl font-serif font-bold mb-4">Nurse Case Management</h4>
+              <p className="text-muted-foreground text-sm leading-relaxed">Bilingual case management support connecting healthcare providers with non-English speaking patients efficiently.</p>
             </div>
-            <div className="bg-background border border-border p-6 rounded-xl">
-              <Globe2 className="w-8 h-8 text-primary mb-4" />
-              <h4 className="font-bold text-lg mb-2">Corporate Events</h4>
-              <p className="text-sm text-muted-foreground">Simultaneous interpreting for conferences, international meetings, and corporate training.</p>
+            <div className="bg-white p-10 border border-border flex flex-col items-start hover:border-primary transition-colors">
+              <Car className="w-8 h-8 text-primary mb-6" />
+              <h4 className="text-xl font-serif font-bold mb-4">Transportation Services</h4>
+              <p className="text-muted-foreground text-sm leading-relaxed">Coordinated, culturally-sensitive transportation logistics for clients attending critical appointments.</p>
             </div>
-            <div className="bg-background border border-border p-6 rounded-xl">
-              <MapPin className="w-8 h-8 text-primary mb-4" />
-              <h4 className="font-bold text-lg mb-2">Transportation Services</h4>
-              <p className="text-sm text-muted-foreground">Coordinated, culturally-sensitive transportation for clients attending critical appointments.</p>
+            <div className="bg-white p-10 border border-border flex flex-col items-start hover:border-primary transition-colors">
+              <Globe2 className="w-8 h-8 text-primary mb-6" />
+              <h4 className="text-xl font-serif font-bold mb-4">Corporate & Government</h4>
+              <p className="text-muted-foreground text-sm leading-relaxed">Simultaneous interpreting for conferences, international meetings, and sensitive government agency outreach.</p>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Cultural Competency Callout */}
-      <section className="bg-primary text-primary-foreground py-20 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-[url('/cultural-abstract.png')] bg-cover bg-center mix-blend-overlay"></div>
+      {/* 6. WHY CHOOSE ARIA */}
+      <section id="why-aria" className="py-32 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-12 gap-16">
+            <div className="lg:col-span-5">
+              <div className="sticky top-32">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="h-[1px] w-8 bg-primary"></div>
+                  <span className="text-primary uppercase tracking-[0.2em] text-xs font-bold">The Aria Standard</span>
+                </div>
+                <h2 className="text-4xl md:text-5xl font-serif text-foreground leading-tight mb-6">Uncompromising Quality as a Standard.</h2>
+                <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+                  Most agencies assign interpreters based on lowest cost. We never do this. When stakes are highest, precision is the only metric that matters.
+                </p>
+                <Button onClick={() => scrollTo("contact")} className="rounded-none px-8 py-6 text-sm uppercase tracking-widest font-semibold bg-secondary hover:bg-secondary/90">
+                  Partner With Us
+                </Button>
+              </div>
+            </div>
+            <div className="lg:col-span-7 flex flex-col gap-12">
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeUp} className="border-l border-primary pl-8">
+                <h4 className="text-2xl font-serif font-bold mb-4 text-foreground">Dialect-Level Precision</h4>
+                <p className="text-muted-foreground leading-relaxed">
+                  We match interpreters to specific regional dialects. An Iraqi Arabic speaker is not interchangeable with a Moroccan or Levantine speaker. Most agencies don't know the difference. We staff for it.
+                </p>
+              </motion.div>
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeUp} className="border-l border-primary pl-8">
+                <h4 className="text-2xl font-serif font-bold mb-4 text-foreground">Cultural Competency as a Standard</h4>
+                <p className="text-muted-foreground leading-relaxed">
+                  Aria is the ONLY agency that actively incorporates cultural understanding into every placement. A medically accurate translation that violates cultural norms fails the patient. We prevent that.
+                </p>
+              </motion.div>
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeUp} className="border-l border-primary pl-8">
+                <h4 className="text-2xl font-serif font-bold mb-4 text-foreground">Largest Certified Network</h4>
+                <p className="text-muted-foreground leading-relaxed">
+                  We maintain the largest dedicated, certified interpreter and translator network specializing specifically in Middle Eastern languages.
+                </p>
+              </motion.div>
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeUp} className="border-l border-primary pl-8">
+                <h4 className="text-2xl font-serif font-bold mb-4 text-foreground">Outcomes-Focused</h4>
+                <p className="text-muted-foreground leading-relaxed">
+                  Our precision directly improves patient outcomes, legal accuracy, and client satisfaction. We view language services as risk mitigation.
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. CULTURAL COMPETENCY CALLOUT */}
+      <section className="bg-primary py-32 relative overflow-hidden flex items-center justify-center">
+        <div className="absolute inset-0 bg-[url('/cultural-abstract.png')] bg-cover bg-center opacity-10 mix-blend-multiply"></div>
         <div className="max-w-5xl mx-auto px-6 relative z-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+          <motion.h2 
+            initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
+            className="text-3xl md:text-5xl lg:text-6xl font-serif text-white leading-tight"
           >
-            <h2 className="text-3xl md:text-5xl font-serif font-bold mb-8 leading-tight">
-              Aria is the ONLY agency that actively incorporates <span className="italic text-secondary">cultural understanding</span> into every interpreter placement.
-            </h2>
-            <p className="text-xl md:text-2xl font-light text-primary-foreground/90 max-w-3xl mx-auto">
-              This is not optional for us — it is foundational. A medically accurate translation that offends cultural sensibilities fails the patient. We prevent that.
-            </p>
-          </motion.div>
+            "Language services are only as good as the <span className="italic text-accent">cultural fluency</span> behind them."
+          </motion.h2>
         </div>
       </section>
 
-      {/* Why Choose Us */}
-      <section id="why-us" className="py-24">
+      {/* 8. LANGUAGES SECTION */}
+      <section id="languages" className="py-32 bg-background border-b border-border">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={stagger}
-            >
-              <motion.h2 variants={fadeIn} className="text-4xl md:text-5xl font-serif font-bold mb-6 text-foreground">
-                The Aria Standard
-              </motion.h2>
-              <motion.p variants={fadeIn} className="text-lg text-muted-foreground mb-10">
-                Most agencies assign interpreters based on lowest cost, with little or no regard for cultural sensitivity, regional nuance, or dialect. We never do this. Here is what sets us apart.
-              </motion.p>
-
-              <div className="space-y-8">
-                <motion.div variants={fadeIn} className="flex gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-lg border border-primary/20">1</div>
-                  <div>
-                    <h4 className="text-xl font-bold mb-2">Dialect-Level Precision</h4>
-                    <p className="text-muted-foreground leading-relaxed">Many agencies assign any Arabic or Persian speaker. We match interpreters to the specific regional dialect. An Iraqi Arabic speaker is not interchangeable with a Moroccan or Levantine speaker. We know this. We staff for it.</p>
-                  </div>
-                </motion.div>
-                <motion.div variants={fadeIn} className="flex gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-lg border border-primary/20">2</div>
-                  <div>
-                    <h4 className="text-xl font-bold mb-2">Largest Dedicated Network</h4>
-                    <p className="text-muted-foreground leading-relaxed">We have the largest dedicated, certified interpreter and translator network in Middle Eastern languages in the region, offering unparalleled availability and depth.</p>
-                  </div>
-                </motion.div>
-                <motion.div variants={fadeIn} className="flex gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-lg border border-primary/20">3</div>
-                  <div>
-                    <h4 className="text-xl font-bold mb-2">Outcomes-Focused</h4>
-                    <p className="text-muted-foreground leading-relaxed">Our linguistic precision directly improves patient outcomes, legal accuracy, and client satisfaction. When the stakes are highest, precision matters most.</p>
-                  </div>
-                </motion.div>
-              </div>
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="relative rounded-2xl overflow-hidden border border-border shadow-lg"
-            >
-              <img src="/cultural-abstract.png" alt="Cultural connection abstract" className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-tr from-background/80 via-transparent to-transparent"></div>
-              <div className="absolute bottom-8 left-8 right-8 bg-background/90 backdrop-blur p-6 rounded-xl border border-border">
-                <p className="font-serif italic text-xl text-foreground mb-2">"Language services are only as good as the cultural fluency behind them."</p>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Languages Section */}
-      <section id="languages" className="py-24 bg-secondary/30 border-y border-border">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeIn}
-          >
-            <h2 className="text-3xl md:text-5xl font-serif font-bold mb-6 text-foreground">100+ Languages.<br/>Unmatched Depth.</h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-16">
-              While we serve common languages with excellence, our true distinction is our unparalleled depth in the Middle Eastern and exotic languages that other agencies cannot properly staff.
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-8 text-left">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="bg-card p-8 rounded-2xl border border-primary/20 shadow-sm relative overflow-hidden"
-            >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full -z-10"></div>
-              <h3 className="text-2xl font-serif font-bold mb-4 text-primary">Middle Eastern Core</h3>
-              <ul className="space-y-3 text-muted-foreground">
-                <li><strong className="text-foreground">Arabic</strong> (Egyptian, Levantine, Gulf, Moroccan, Iraqi, Sudanese, Yemeni)</li>
-                <li><strong className="text-foreground">Persian/Farsi</strong> (Dari, Tajik)</li>
-                <li><strong className="text-foreground">Kurdish</strong> (Kurmanji, Sorani)</li>
-                <li><strong className="text-foreground">Pashto</strong> & <strong className="text-foreground">Urdu</strong></li>
-                <li><strong className="text-foreground">Turkish</strong> & <strong className="text-foreground">Hebrew</strong></li>
-              </ul>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="bg-card p-8 rounded-2xl border border-border shadow-sm"
-            >
-              <h3 className="text-2xl font-serif font-bold mb-4">African & Exotic</h3>
-              <ul className="space-y-3 text-muted-foreground">
-                <li>Amharic</li>
-                <li>Somali</li>
-                <li>Tigrinya</li>
-                <li>Swahili</li>
-                <li>Oromo</li>
-                <li>And dozens more hard-to-staff languages.</li>
-              </ul>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="bg-card p-8 rounded-2xl border border-border shadow-sm"
-            >
-              <h3 className="text-2xl font-serif font-bold mb-4">Global Reach</h3>
-              <ul className="space-y-3 text-muted-foreground">
-                <li>Spanish</li>
-                <li>French</li>
-                <li>Mandarin & Cantonese</li>
-                <li>Vietnamese</li>
-                <li>Portuguese</li>
-                <li>Russian</li>
-              </ul>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section id="about" className="py-24">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={stagger}
-          >
-            <div className="w-24 h-24 mx-auto mb-8 rounded-full bg-primary/10 flex items-center justify-center">
-              <img src="/aria-logo.jpg" alt="Aria Logo Mark" className="w-16 h-16 object-contain mix-blend-multiply" />
+          <div className="text-center mb-20">
+            <div className="flex items-center justify-center gap-4 mb-4">
+              <div className="h-[1px] w-8 bg-primary"></div>
+              <span className="text-primary uppercase tracking-[0.2em] text-xs font-bold">Linguistic Breadth</span>
+              <div className="h-[1px] w-8 bg-primary"></div>
             </div>
-            <motion.h2 variants={fadeIn} className="text-3xl md:text-5xl font-serif font-bold mb-8 text-foreground">
-              Our Story
-            </motion.h2>
-            <motion.div variants={fadeIn} className="text-lg text-muted-foreground space-y-6 leading-relaxed font-light">
-              <p>
-                Aria Language Services was founded by a team of Persian-American language professionals who saw a critical gap in the market: agencies that could serve Middle Eastern communities with the linguistic precision and cultural sensitivity those communities deserve.
-              </p>
-              <p>
-                Starting with Persian, Arabic, and Kurdish, the agency expanded over the years into 100+ languages — always maintaining the founding principle that language services are only as good as the cultural fluency behind them. The Homa bird in our logo symbolizes freedom and nobility, guiding our mission to empower individuals through clear communication.
-              </p>
-              <p>
-                Today, Aria is the premier Middle Eastern language services agency, trusted by hospitals, courts, law firms, and government agencies across the region to handle their most sensitive interactions.
-              </p>
-            </motion.div>
-          </motion.div>
+            <h2 className="text-4xl md:text-5xl font-serif text-foreground mb-6">100+ Languages. Depth Where It Counts.</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              We serve global languages with excellence, but our definitive edge lies in the complex dialects of the Middle East and Africa.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-8">
+            <div className="bg-secondary text-white p-10 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-bl-full -z-10 group-hover:scale-150 transition-transform duration-700"></div>
+              <h3 className="text-2xl font-serif mb-8 text-accent">Middle Eastern Core</h3>
+              <div className="space-y-6 font-light">
+                <div><strong className="font-semibold text-white text-lg">Arabic</strong><br/><span className="text-white/70">Egyptian, Levantine, Gulf/Khaleeji, Moroccan, Iraqi, Sudanese, Yemeni</span></div>
+                <div><strong className="font-semibold text-white text-lg">Persian/Farsi</strong><br/><span className="text-white/70">Dari, Tajik</span></div>
+                <div><strong className="font-semibold text-white text-lg">Kurdish</strong><br/><span className="text-white/70">Kurmanji, Sorani</span></div>
+                <div className="pt-4 border-t border-white/10"><strong className="font-semibold text-white text-lg">Pashto • Urdu • Turkish • Hebrew</strong></div>
+              </div>
+            </div>
+
+            <div className="bg-white border border-border p-10 hover:border-primary transition-colors">
+              <h3 className="text-2xl font-serif mb-8 text-foreground">African & Rare</h3>
+              <ul className="space-y-4 text-muted-foreground">
+                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-primary rounded-full"></span> Amharic</li>
+                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-primary rounded-full"></span> Somali</li>
+                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-primary rounded-full"></span> Tigrinya</li>
+                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-primary rounded-full"></span> Swahili</li>
+                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-primary rounded-full"></span> Oromo</li>
+              </ul>
+            </div>
+
+            <div className="bg-white border border-border p-10 hover:border-primary transition-colors">
+              <h3 className="text-2xl font-serif mb-8 text-foreground">Global Reach</h3>
+              <ul className="space-y-4 text-muted-foreground">
+                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-primary rounded-full"></span> Spanish & Portuguese</li>
+                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-primary rounded-full"></span> French</li>
+                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-primary rounded-full"></span> Mandarin & Cantonese</li>
+                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-primary rounded-full"></span> Vietnamese</li>
+                <li className="flex items-center gap-3"><span className="w-1.5 h-1.5 bg-primary rounded-full"></span> Russian</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-24 bg-primary text-primary-foreground">
+      {/* 9. CASE STUDIES */}
+      <section id="case-studies" className="py-32 bg-secondary text-white relative">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+            <div className="max-w-2xl">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="h-[1px] w-8 bg-accent"></div>
+                <span className="text-accent uppercase tracking-[0.2em] text-xs font-bold">Impact</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-serif leading-tight">Proven Outcomes.</h2>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white/5 border border-white/10 p-8 flex flex-col">
+              <div className="mb-8"><HeartPulse className="text-accent w-8 h-8" /></div>
+              <h3 className="text-xl font-serif font-bold mb-6">Healthcare: Dialect Specificity</h3>
+              <div className="space-y-4 text-sm text-white/70 flex-grow">
+                <p><strong className="text-white">Challenge:</strong> A regional medical center struggled with non-compliance among Iraqi patients despite using general Arabic interpreters.</p>
+                <p><strong className="text-white">Approach:</strong> Aria staffed certified Iraqi dialect interpreters who navigated specific cultural nuances regarding medication.</p>
+                <p><strong className="text-white">Result:</strong> Patient compliance increased by 42% over six months.</p>
+              </div>
+            </div>
+
+            <div className="bg-white/5 border border-white/10 p-8 flex flex-col">
+              <div className="mb-8"><Scale className="text-accent w-8 h-8" /></div>
+              <h3 className="text-xl font-serif font-bold mb-6">Legal: Cultural Context</h3>
+              <div className="space-y-4 text-sm text-white/70 flex-grow">
+                <p><strong className="text-white">Challenge:</strong> A complex deposition involving a Sorani Kurdish speaker was failing due to idioms not translating directly.</p>
+                <p><strong className="text-white">Approach:</strong> Aria provided a court-certified Sorani expert with deep understanding of regional idiomatic expressions.</p>
+                <p><strong className="text-white">Result:</strong> A highly accurate transcript that withstood intensive cross-examination.</p>
+              </div>
+            </div>
+
+            <div className="bg-white/5 border border-white/10 p-8 flex flex-col">
+              <div className="mb-8"><Building2 className="text-accent w-8 h-8" /></div>
+              <h3 className="text-xl font-serif font-bold mb-6">Government: Outreach</h3>
+              <div className="space-y-4 text-sm text-white/70 flex-grow">
+                <p><strong className="text-white">Challenge:</strong> A federal agency needed to disseminate critical policy changes to Afghan communities rapidly.</p>
+                <p><strong className="text-white">Approach:</strong> Aria deployed a coordinated team of Dari and Pashto interpreters for town halls.</p>
+                <p><strong className="text-white">Result:</strong> Successfully reached 5,000+ community members with verified comprehension metrics.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 10. ACCREDITATIONS */}
+      <section className="py-16 bg-primary text-white border-y border-primary-foreground/10">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-wrap justify-center gap-12 md:gap-24">
+            {[
+              { icon: ShieldCheck, text: "NBCMI Certified" },
+              { icon: Award, text: "ATA Member" },
+              { icon: FileText, text: "HIPAA Compliant" },
+              { icon: Scale, text: "Court Certified" },
+              { icon: MapPin, text: "State Licensed" }
+            ].map((Badge, i) => (
+              <div key={i} className="flex flex-col items-center gap-3">
+                <Badge.icon className="w-8 h-8 text-accent" />
+                <span className="text-sm font-semibold tracking-wider uppercase text-white/90">{Badge.text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 11. ABOUT / OUR STORY */}
+      <section id="about" className="py-32 bg-background">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="flex flex-col items-center text-center mb-16">
+            <img src="/aria-logo.jpg" alt="Aria Logo" className="w-16 h-16 object-contain mb-8 mix-blend-multiply" />
+            <h2 className="text-4xl md:text-5xl font-serif text-foreground mb-6">Institutional Pedigree.<br/>Cultural Roots.</h2>
+          </div>
+
+          <div className="relative border-l border-border pl-8 md:pl-12 ml-4 md:ml-12 space-y-16">
+            <div className="relative">
+              <div className="absolute -left-[41px] md:-left-[57px] top-1 w-4 h-4 bg-primary rounded-full ring-8 ring-background"></div>
+              <h4 className="text-xl font-serif font-bold text-foreground mb-3">The Genesis</h4>
+              <p className="text-muted-foreground leading-relaxed">Founded by Persian-American language professionals who identified a critical gap: large agencies were treating Middle Eastern languages as a monolith, failing to account for vast dialectical and cultural differences.</p>
+            </div>
+            <div className="relative">
+              <div className="absolute -left-[41px] md:-left-[57px] top-1 w-4 h-4 bg-border rounded-full ring-8 ring-background"></div>
+              <h4 className="text-xl font-serif font-bold text-foreground mb-3">Targeted Focus</h4>
+              <p className="text-muted-foreground leading-relaxed">Starting exclusively with Persian, Arabic, and Kurdish, Aria built the most rigorous vetting process in the industry, focusing on medical and legal certifications.</p>
+            </div>
+            <div className="relative">
+              <div className="absolute -left-[41px] md:-left-[57px] top-1 w-4 h-4 bg-border rounded-full ring-8 ring-background"></div>
+              <h4 className="text-xl font-serif font-bold text-foreground mb-3">Scale & Depth</h4>
+              <p className="text-muted-foreground leading-relaxed">Expanded to 100+ languages while maintaining the founding principle: never compromise on cultural fluency. If we cannot staff a language accurately, we will not staff it at all.</p>
+            </div>
+            <div className="relative">
+              <div className="absolute -left-[41px] md:-left-[57px] top-1 w-4 h-4 bg-primary rounded-full ring-8 ring-background"></div>
+              <h4 className="text-xl font-serif font-bold text-foreground mb-3">The Premier Standard</h4>
+              <p className="text-muted-foreground leading-relaxed">Today, Aria is trusted by the nation's top hospitals, courts, law firms, and government agencies to handle their most sensitive and critical communications.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 12. CONTACT */}
+      <section id="contact" className="py-32 bg-secondary text-white relative">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-16">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">Request a Quote</h2>
-              <p className="text-xl text-primary-foreground/80 mb-10 font-light">
-                Partner with the leading agency in cultural and linguistic accuracy. <strong className="text-white">We respond within 2 business hours.</strong>
+            <div>
+              <div className="flex items-center gap-4 mb-4">
+                <div className="h-[1px] w-8 bg-accent"></div>
+                <span className="text-accent uppercase tracking-[0.2em] text-xs font-bold">Engage Aria</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-serif mb-6">Request a Consultation.</h2>
+              <p className="text-white/70 text-lg mb-12 max-w-md">
+                Partner with the definitive authority in language services. Our senior placement specialists respond to all inquiries within 2 business hours.
               </p>
-              
-              <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
-                    <Phone className="w-5 h-5 text-white" />
-                  </div>
+
+              <div className="space-y-8">
+                <div className="flex items-start gap-4">
+                  <Phone className="w-6 h-6 text-accent mt-1" />
                   <div>
-                    <p className="text-sm text-primary-foreground/70 uppercase tracking-wider font-semibold">Call Us</p>
-                    <p className="text-lg font-medium">1-800-555-ARIA</p>
+                    <p className="text-xs uppercase tracking-widest text-white/50 font-semibold mb-1">Direct Line</p>
+                    <p className="text-2xl font-serif">1-800-555-ARIA</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
-                    <Mail className="w-5 h-5 text-white" />
-                  </div>
+                <div className="flex items-start gap-4">
+                  <Mail className="w-6 h-6 text-accent mt-1" />
                   <div>
-                    <p className="text-sm text-primary-foreground/70 uppercase tracking-wider font-semibold">Email</p>
-                    <p className="text-lg font-medium">quotes@arialanguages.com</p>
+                    <p className="text-xs uppercase tracking-widest text-white/50 font-semibold mb-1">Email</p>
+                    <p className="text-xl font-serif">quotes@arialanguages.com</p>
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="bg-card text-card-foreground p-8 rounded-2xl shadow-xl"
-            >
-              <form className="space-y-6" onSubmit={(e) => e.preventDefault()} data-testid="form-quote">
+            <div className="bg-white p-8 md:p-10 text-foreground">
+              <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="name">Full Name</Label>
-                    <Input id="name" placeholder="Jane Doe" className="bg-background" data-testid="input-name" />
+                    <label className="text-xs uppercase tracking-widest font-semibold text-muted-foreground">Full Name</label>
+                    <Input className="rounded-none border-border h-12 bg-background focus-visible:ring-primary" placeholder="Jane Doe" data-testid="input-name" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="org">Organization</Label>
-                    <Input id="org" placeholder="General Hospital" className="bg-background" data-testid="input-org" />
+                    <label className="text-xs uppercase tracking-widest font-semibold text-muted-foreground">Organization</label>
+                    <Input className="rounded-none border-border h-12 bg-background focus-visible:ring-primary" placeholder="Institution Name" data-testid="input-org" />
                   </div>
                 </div>
                 
-                <div className="space-y-2">
-                  <Label htmlFor="language">Language Needed</Label>
-                  <Input id="language" placeholder="e.g., Levantine Arabic, Dari, Spanish" className="bg-background" data-testid="input-language" />
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-xs uppercase tracking-widest font-semibold text-muted-foreground">Language Needed</label>
+                    <Input className="rounded-none border-border h-12 bg-background focus-visible:ring-primary" placeholder="e.g., Arabic (Iraqi)" data-testid="input-language" />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs uppercase tracking-widest font-semibold text-muted-foreground">Service Type</label>
+                    <Select>
+                      <SelectTrigger className="rounded-none border-border h-12 bg-background focus:ring-primary" data-testid="select-service">
+                        <SelectValue placeholder="Select Service" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="medical">Medical Interpretation</SelectItem>
+                        <SelectItem value="judicial">Judicial & Legal</SelectItem>
+                        <SelectItem value="corporate">Corporate / Event</SelectItem>
+                        <SelectItem value="translation">Document Translation</SelectItem>
+                        <SelectItem value="other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Service Type</Label>
-                  <Select>
-                    <SelectTrigger className="bg-background" data-testid="select-service-type">
-                      <SelectValue placeholder="Select a service" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="medical">Medical Interpretation</SelectItem>
-                      <SelectItem value="judicial">Judicial / Legal Interpretation</SelectItem>
-                      <SelectItem value="document">Document Translation</SelectItem>
-                      <SelectItem value="nurse">Nurse Case Management</SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <label className="text-xs uppercase tracking-widest font-semibold text-muted-foreground">Message / Details</label>
+                  <Textarea className="rounded-none border-border min-h-[120px] bg-background focus-visible:ring-primary" placeholder="Please provide details about the appointment or project..." data-testid="input-message" />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="message">Additional Details</Label>
-                  <Textarea id="message" placeholder="Tell us about your specific requirements, dates, or dialect needs..." className="min-h-[120px] bg-background" data-testid="input-message" />
-                </div>
-
-                <Button type="submit" className="w-full h-12 text-base rounded-xl" data-testid="btn-submit-quote">
+                <Button className="w-full rounded-none h-14 text-sm uppercase tracking-widest font-bold bg-primary hover:bg-primary/90 text-white mt-4" data-testid="btn-submit-consultation">
                   Submit Request
                 </Button>
               </form>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-background pt-20 pb-10 border-t border-border">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-4 gap-12 mb-16">
-            <div className="md:col-span-2">
-              <div className="flex items-center gap-3 mb-6">
-                <img src="/aria-logo.jpg" alt="Aria Language Services Logo" className="h-10 w-auto object-contain" />
-                <div className="flex flex-col">
-                  <span className="font-serif font-bold text-xl text-primary leading-tight">Aria</span>
-                  <span className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">Language Services</span>
-                </div>
+      {/* 13. FOOTER */}
+      <footer className="bg-[#0a0f1a] text-white/60 py-16 border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12 mb-12">
+          <div className="md:col-span-2">
+            <div className="flex items-center gap-4 mb-6">
+              <img src="/aria-logo.jpg" alt="Aria Logo" className="h-10 w-auto object-contain brightness-0 invert" />
+              <div className="flex flex-col">
+                <span className="font-serif font-bold text-xl leading-none tracking-wide text-white">ARIA</span>
+                <span className="text-[10px] uppercase tracking-[0.2em] font-semibold mt-1 text-white/50">Language Services</span>
               </div>
-              <p className="text-2xl font-serif italic text-muted-foreground mb-6">
-                "We Speak Your Language"
-              </p>
-              <p className="text-muted-foreground max-w-md">
-                The premier Middle Eastern language services agency, providing certified interpretation and translation with unmatched cultural competency.
-              </p>
             </div>
-            
-            <div>
-              <h4 className="font-bold mb-6 uppercase tracking-wider text-sm">Services</h4>
-              <ul className="space-y-4 text-muted-foreground">
-                <li><button onClick={() => scrollToSection('services')} className="hover:text-primary transition-colors" data-testid="footer-nav-medical">Medical Interpretation</button></li>
-                <li><button onClick={() => scrollToSection('services')} className="hover:text-primary transition-colors" data-testid="footer-nav-judicial">Judicial Interpretation</button></li>
-                <li><button onClick={() => scrollToSection('services')} className="hover:text-primary transition-colors" data-testid="footer-nav-nurse">Nurse Case Management</button></li>
-                <li><button onClick={() => scrollToSection('services')} className="hover:text-primary transition-colors" data-testid="footer-nav-transport">Transportation</button></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-bold mb-6 uppercase tracking-wider text-sm">Company</h4>
-              <ul className="space-y-4 text-muted-foreground">
-                <li><button onClick={() => scrollToSection('why-us')} className="hover:text-primary transition-colors" data-testid="footer-nav-why-us">Why Choose Us</button></li>
-                <li><button onClick={() => scrollToSection('languages')} className="hover:text-primary transition-colors" data-testid="footer-nav-languages">Languages</button></li>
-                <li><button onClick={() => scrollToSection('about')} className="hover:text-primary transition-colors" data-testid="footer-nav-about">Our Story</button></li>
-                <li><button onClick={() => scrollToSection('contact')} className="hover:text-primary transition-colors" data-testid="footer-nav-contact">Contact</button></li>
-              </ul>
-            </div>
+            <p className="font-serif italic text-lg text-white/80 max-w-sm">We Speak Your Language.</p>
           </div>
           
-          <div className="pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-            <p>© {new Date().getFullYear()} Aria Language Services. All rights reserved.</p>
-            <div className="flex gap-6">
-              <a href="#" className="hover:text-primary transition-colors" data-testid="link-privacy">Privacy Policy</a>
-              <a href="#" className="hover:text-primary transition-colors" data-testid="link-terms">Terms of Service</a>
-            </div>
+          <div>
+            <h5 className="text-white font-semibold uppercase tracking-widest text-xs mb-6">Expertise</h5>
+            <ul className="space-y-3 text-sm">
+              <li><Link href="#services" className="hover:text-accent transition-colors">Medical</Link></li>
+              <li><Link href="#services" className="hover:text-accent transition-colors">Judicial & Legal</Link></li>
+              <li><Link href="#services" className="hover:text-accent transition-colors">Corporate</Link></li>
+              <li><Link href="#services" className="hover:text-accent transition-colors">Government</Link></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h5 className="text-white font-semibold uppercase tracking-widest text-xs mb-6">Firm</h5>
+            <ul className="space-y-3 text-sm">
+              <li><Link href="#about" className="hover:text-accent transition-colors">Our Story</Link></li>
+              <li><Link href="#why-aria" className="hover:text-accent transition-colors">The Aria Standard</Link></li>
+              <li><Link href="#languages" className="hover:text-accent transition-colors">Languages</Link></li>
+              <li><Link href="#contact" className="hover:text-accent transition-colors">Contact</Link></li>
+            </ul>
+          </div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10 text-xs">
+          <p>&copy; {new Date().getFullYear()} Aria Language Services. All rights reserved.</p>
+          <div className="flex gap-6 mt-4 md:mt-0">
+            <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="#" className="hover:text-white transition-colors">Terms of Service</Link>
           </div>
         </div>
       </footer>

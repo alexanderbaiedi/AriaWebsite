@@ -5,22 +5,22 @@ outputs = []
 id = "ZErh_5ppczLdewpTEeLr_"
 uri = "file://artifacts/aria-website/public/hero-bg.png"
 type = "image"
-title = "hero background image"
+title = "Hero background with Persian geometry"
 
 [[generated]]
 id = "voiq6POVjQoDWWhSb8HpY"
 uri = "file://artifacts/aria-website/public/service-medical.png"
 type = "image"
-title = "medical interpretation image"
+title = "Professional medical interpretation setting"
 
 [[generated]]
 id = "6a397iBNpPKLWgtL2pTMO"
 uri = "file://artifacts/aria-website/public/service-judicial.png"
 type = "image"
-title = "judicial interpretation image"
+title = "Professional judicial interpretation setting"
 
 [[generated]]
 id = "Zruoj5-fTHRubaWtiFxYN"
 uri = "file://artifacts/aria-website/public/cultural-abstract.png"
 type = "image"
-title = "cultural competency abstract"
+title = "Abstract cultural geometric background"
