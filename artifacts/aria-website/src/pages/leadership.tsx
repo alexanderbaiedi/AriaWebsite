@@ -45,6 +45,13 @@ const leaders = [
     description: "With over 40 years of experience in the medical field, Lyda brings unparalleled clinical expertise to Aria's medical interpretation services. Her deep understanding of healthcare workflows, patient communication needs, and clinical terminology ensures that Aria's medical interpreters are not just linguistically accurate but clinically informed. Lyda's oversight means that every medical interpretation meets the highest standards of patient care — because she knows firsthand what's at stake when communication fails in a clinical setting.",
     initials: "LS",
     accentColor: "bg-accent"
+  },
+  {
+    name: "Santiago Assis",
+    title: "Customer Success Manager",
+    description: "Santiago has been making clients his top priority for over a decade, approaching every relationship with grace and humility. His unwavering dedication to customer success ensures that every institution partnering with Aria receives not just a service, but a genuine commitment to their needs. Santiago's ability to listen, anticipate, and deliver has made him a trusted point of contact for Aria's most valued partners.",
+    initials: "SA",
+    accentColor: "bg-primary"
   }
 ];
 

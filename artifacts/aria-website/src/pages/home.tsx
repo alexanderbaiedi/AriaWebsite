@@ -576,14 +576,14 @@ export default function Home() {
                   <Phone className="w-6 h-6 text-accent mt-1" />
                   <div>
                     <p className="text-xs uppercase tracking-widest text-white/50 font-semibold mb-1">Direct Line</p>
-                    <p className="text-2xl font-serif">1-800-555-ARIA</p>
+                    <p className="text-2xl font-serif">+1 (949) 385-1807</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
                   <Mail className="w-6 h-6 text-accent mt-1" />
                   <div>
                     <p className="text-xs uppercase tracking-widest text-white/50 font-semibold mb-1">Email</p>
-                    <p className="text-xl font-serif">quotes@arialanguages.com</p>
+                    <p className="text-xl font-serif">aria@arialanguageservices.com</p>
                   </div>
                 </div>
               </div>
