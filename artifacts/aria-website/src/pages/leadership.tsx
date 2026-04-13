@@ -91,7 +91,7 @@ export default function Leadership() {
             </a>
             <a href="/#contact">
               <Button className="rounded-none px-8 py-6 text-sm uppercase tracking-widest font-semibold bg-primary text-white hover:bg-primary/90" data-testid="nav-cta-leadership">
-                Request a Consultation
+                Contact Us
               </Button>
             </a>
           </div>
@@ -168,13 +168,13 @@ export default function Leadership() {
           <motion.div
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
           >
-            <h2 className="text-3xl md:text-5xl font-serif text-white mb-8">Ready to Partner With Us?</h2>
+            <h2 className="text-3xl md:text-5xl font-serif text-white mb-8">Ready to Work With Us?</h2>
             <p className="text-xl text-white/80 font-light mb-12 max-w-2xl mx-auto">
               Our leadership team is personally invested in every institutional partnership. Reach out to discuss how Aria can serve your organization.
             </p>
             <a href="/#contact">
               <Button className="rounded-none px-12 h-16 text-sm uppercase tracking-widest font-semibold bg-white text-primary hover:bg-white/90" data-testid="leadership-cta">
-                Request a Consultation
+                Contact Us
               </Button>
             </a>
           </motion.div>

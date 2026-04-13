@@ -19,9 +19,6 @@ import {
   X
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 // --- ANIMATION VARIANTS ---
 const fadeUp = {
@@ -149,7 +146,7 @@ export default function Home() {
               }`}
               data-testid="nav-cta"
             >
-              Request a Consultation
+              Contact Us
             </Button>
           </div>
 
@@ -215,7 +212,7 @@ export default function Home() {
             
             <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-6">
               <Button size="lg" onClick={() => scrollTo("contact")} className="rounded-none px-10 h-16 text-sm uppercase tracking-widest font-semibold bg-primary hover:bg-primary/90 text-white" data-testid="hero-cta-consultation">
-                Request a Consultation
+                Contact Us
               </Button>
               <Button size="lg" variant="outline" onClick={() => scrollTo("services")} className="rounded-none px-10 h-16 text-sm uppercase tracking-widest font-semibold border-white/20 text-white hover:bg-white hover:text-secondary bg-transparent backdrop-blur-sm" data-testid="hero-cta-services">
                 Explore Expertise
@@ -347,7 +344,7 @@ export default function Home() {
                   Most agencies assign interpreters based on lowest cost. We never do this. When stakes are highest, precision is the only metric that matters.
                 </p>
                 <Button onClick={() => scrollTo("contact")} className="rounded-none px-8 py-6 text-sm uppercase tracking-widest font-semibold bg-secondary hover:bg-secondary/90">
-                  Partner With Us
+                  Contact Us
                 </Button>
               </div>
             </div>
@@ -559,81 +556,36 @@ export default function Home() {
 
       {/* 12. CONTACT */}
       <section id="contact" className="py-32 bg-secondary text-white relative">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16">
-            <div>
-              <div className="flex items-center gap-4 mb-4">
-                <div className="h-[1px] w-8 bg-accent"></div>
-                <span className="text-accent uppercase tracking-[0.2em] text-xs font-bold">Engage Aria</span>
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <div className="h-[1px] w-8 bg-accent"></div>
+            <span className="text-accent uppercase tracking-[0.2em] text-xs font-bold">Contact Us</span>
+            <div className="h-[1px] w-8 bg-accent"></div>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-serif mb-6">Get in Touch.</h2>
+          <p className="text-white/70 text-lg mb-16 max-w-xl mx-auto">
+            Partner with the definitive authority in language services. Our senior placement specialists respond to all inquiries within 2 business hours.
+          </p>
+
+          <div className="flex flex-col md:flex-row items-center justify-center gap-12 md:gap-20">
+            <a href="tel:+19493851807" className="flex items-center gap-4 group" data-testid="contact-phone">
+              <div className="w-16 h-16 bg-white/10 flex items-center justify-center group-hover:bg-primary transition-colors">
+                <Phone className="w-7 h-7 text-accent group-hover:text-white transition-colors" />
               </div>
-              <h2 className="text-4xl md:text-5xl font-serif mb-6">Request a Consultation.</h2>
-              <p className="text-white/70 text-lg mb-12 max-w-md">
-                Partner with the definitive authority in language services. Our senior placement specialists respond to all inquiries within 2 business hours.
-              </p>
-
-              <div className="space-y-8">
-                <div className="flex items-start gap-4">
-                  <Phone className="w-6 h-6 text-accent mt-1" />
-                  <div>
-                    <p className="text-xs uppercase tracking-widest text-white/50 font-semibold mb-1">Direct Line</p>
-                    <p className="text-2xl font-serif">+1 (949) 385-1807</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <Mail className="w-6 h-6 text-accent mt-1" />
-                  <div>
-                    <p className="text-xs uppercase tracking-widest text-white/50 font-semibold mb-1">Email</p>
-                    <p className="text-xl font-serif">aria@arialanguageservices.com</p>
-                  </div>
-                </div>
+              <div className="text-left">
+                <p className="text-xs uppercase tracking-widest text-white/50 font-semibold mb-1">Direct Line</p>
+                <p className="text-2xl font-serif">+1 (949) 385-1807</p>
               </div>
-            </div>
-
-            <div className="bg-white p-8 md:p-10 text-foreground">
-              <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-xs uppercase tracking-widest font-semibold text-muted-foreground">Full Name</label>
-                    <Input className="rounded-none border-border h-12 bg-background focus-visible:ring-primary" placeholder="Jane Doe" data-testid="input-name" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-xs uppercase tracking-widest font-semibold text-muted-foreground">Organization</label>
-                    <Input className="rounded-none border-border h-12 bg-background focus-visible:ring-primary" placeholder="Institution Name" data-testid="input-org" />
-                  </div>
-                </div>
-                
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-xs uppercase tracking-widest font-semibold text-muted-foreground">Language Needed</label>
-                    <Input className="rounded-none border-border h-12 bg-background focus-visible:ring-primary" placeholder="e.g., Arabic (Iraqi)" data-testid="input-language" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-xs uppercase tracking-widest font-semibold text-muted-foreground">Service Type</label>
-                    <Select>
-                      <SelectTrigger className="rounded-none border-border h-12 bg-background focus:ring-primary" data-testid="select-service">
-                        <SelectValue placeholder="Select Service" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="medical">Medical Interpretation</SelectItem>
-                        <SelectItem value="judicial">Judicial & Legal</SelectItem>
-                        <SelectItem value="corporate">Corporate / Event</SelectItem>
-                        <SelectItem value="translation">Document Translation</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-widest font-semibold text-muted-foreground">Message / Details</label>
-                  <Textarea className="rounded-none border-border min-h-[120px] bg-background focus-visible:ring-primary" placeholder="Please provide details about the appointment or project..." data-testid="input-message" />
-                </div>
-
-                <Button className="w-full rounded-none h-14 text-sm uppercase tracking-widest font-bold bg-primary hover:bg-primary/90 text-white mt-4" data-testid="btn-submit-consultation">
-                  Submit Request
-                </Button>
-              </form>
-            </div>
+            </a>
+            <a href="mailto:aria@arialanguageservices.com" className="flex items-center gap-4 group" data-testid="contact-email">
+              <div className="w-16 h-16 bg-white/10 flex items-center justify-center group-hover:bg-primary transition-colors">
+                <Mail className="w-7 h-7 text-accent group-hover:text-white transition-colors" />
+              </div>
+              <div className="text-left">
+                <p className="text-xs uppercase tracking-widest text-white/50 font-semibold mb-1">Email</p>
+                <p className="text-xl font-serif">aria@arialanguageservices.com</p>
+              </div>
+            </a>
           </div>
         </div>
       </section>
