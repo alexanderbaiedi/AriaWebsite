@@ -37,7 +37,8 @@ const leaders = [
     title: "Director of Business Operations & Technology",
     description: "Alexander leads Aria's operational infrastructure and technology strategy, ensuring that the agency's commitment to quality is reflected in every client interaction. Beyond operations, Alexander is a champion for customers — he ensures that every institutional partner receives the responsiveness, transparency, and precision they expect from a premier agency. His focus on operational excellence means that when a hospital calls at 2 AM needing a Dari interpreter, the system works.",
     initials: "AB",
-    accentColor: "bg-primary"
+    accentColor: "bg-primary",
+    photo: "/alex-baiedi.jpg"
   },
   {
     name: "Lyda Saeedy",
@@ -147,9 +148,15 @@ export default function Leadership() {
                 className={`grid lg:grid-cols-12 gap-0 ${index !== leaders.length - 1 ? "border-b border-border" : ""}`}
               >
                 <div className="lg:col-span-4 py-12 lg:py-16 lg:pr-12">
-                  <div className={`w-24 h-24 ${leader.accentColor} flex items-center justify-center mb-8`}>
-                    <span className="text-white font-serif text-3xl font-bold">{leader.initials}</span>
-                  </div>
+                  {leader.photo ? (
+                    <div className="w-24 h-24 rounded-full overflow-hidden mb-8">
+                      <img src={leader.photo} alt={leader.name} className="w-full h-full object-cover" />
+                    </div>
+                  ) : (
+                    <div className={`w-24 h-24 ${leader.accentColor} flex items-center justify-center mb-8`}>
+                      <span className="text-white font-serif text-3xl font-bold">{leader.initials}</span>
+                    </div>
+                  )}
                   <h3 className="text-3xl font-serif font-bold text-foreground mb-2">{leader.name}</h3>
                   <p className="text-primary font-semibold text-sm uppercase tracking-widest">{leader.title}</p>
                 </div>
