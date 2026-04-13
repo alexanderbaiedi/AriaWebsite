@@ -525,7 +525,7 @@ export default function Home() {
       <section id="about" className="py-32 bg-background">
         <div className="max-w-4xl mx-auto px-6">
           <div className="flex flex-col items-center text-center mb-16">
-            <img src="/aria-logo.jpg" alt="Aria Logo" className="w-16 h-16 object-contain mb-8 mix-blend-multiply" />
+            <img src="/aria-logo-transparent.png" alt="Aria Logo" className="w-16 h-16 object-contain mb-8" />
             <h2 className="text-4xl md:text-5xl font-serif text-foreground mb-6">Institutional Pedigree.<br/>Cultural Roots.</h2>
           </div>
 
@@ -555,37 +555,49 @@ export default function Home() {
       </section>
 
       {/* 12. CONTACT */}
-      <section id="contact" className="py-32 bg-secondary text-white relative">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <div className="h-[1px] w-8 bg-accent"></div>
-            <span className="text-accent uppercase tracking-[0.2em] text-xs font-bold">Contact Us</span>
-            <div className="h-[1px] w-8 bg-accent"></div>
+      <section id="contact" className="py-32 bg-secondary text-white relative overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)", backgroundSize: "40px 40px" }}></div>
+        <div className="max-w-6xl mx-auto px-6 relative z-10">
+          <div className="text-center mb-20">
+            <div className="flex items-center justify-center gap-4 mb-4">
+              <div className="h-[1px] w-8 bg-accent"></div>
+              <span className="text-accent uppercase tracking-[0.2em] text-xs font-bold">Contact Us</span>
+              <div className="h-[1px] w-8 bg-accent"></div>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-serif mb-6">Get in Touch.</h2>
+            <p className="text-white/70 text-lg max-w-xl mx-auto">
+              Partner with the definitive authority in language services. Our senior placement specialists respond to all inquiries within 2 business hours.
+            </p>
           </div>
-          <h2 className="text-4xl md:text-5xl font-serif mb-6">Get in Touch.</h2>
-          <p className="text-white/70 text-lg mb-16 max-w-xl mx-auto">
-            Partner with the definitive authority in language services. Our senior placement specialists respond to all inquiries within 2 business hours.
-          </p>
 
-          <div className="flex flex-col md:flex-row items-center justify-center gap-12 md:gap-20">
-            <a href="tel:+19493851807" className="flex items-center gap-4 group" data-testid="contact-phone">
-              <div className="w-16 h-16 bg-white/10 flex items-center justify-center group-hover:bg-primary transition-colors">
-                <Phone className="w-7 h-7 text-accent group-hover:text-white transition-colors" />
-              </div>
-              <div className="text-left">
-                <p className="text-xs uppercase tracking-widest text-white/50 font-semibold mb-1">Direct Line</p>
-                <p className="text-2xl font-serif">+1 (949) 385-1807</p>
-              </div>
-            </a>
-            <a href="mailto:aria@arialanguageservices.com" className="flex items-center gap-4 group" data-testid="contact-email">
-              <div className="w-16 h-16 bg-white/10 flex items-center justify-center group-hover:bg-primary transition-colors">
-                <Mail className="w-7 h-7 text-accent group-hover:text-white transition-colors" />
-              </div>
-              <div className="text-left">
-                <p className="text-xs uppercase tracking-widest text-white/50 font-semibold mb-1">Email</p>
-                <p className="text-xl font-serif">aria@arialanguageservices.com</p>
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <a href="tel:+19493851807" className="group block" data-testid="contact-phone">
+              <div className="border border-white/10 p-10 hover:border-accent/40 transition-all duration-300 hover:bg-white/[0.03]">
+                <div className="w-14 h-14 bg-primary/20 flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
+                  <Phone className="w-6 h-6 text-accent group-hover:text-white transition-colors" />
+                </div>
+                <p className="text-xs uppercase tracking-widest text-white/40 font-semibold mb-3">Direct Line</p>
+                <p className="text-2xl font-serif text-white mb-4">+1 (949) 385-1807</p>
+                <p className="text-white/50 text-sm">Available during business hours.<br/>Urgent requests accommodated 24/7.</p>
               </div>
             </a>
+            <a href="mailto:aria@arialanguageservices.com" className="group block" data-testid="contact-email">
+              <div className="border border-white/10 p-10 hover:border-accent/40 transition-all duration-300 hover:bg-white/[0.03]">
+                <div className="w-14 h-14 bg-primary/20 flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
+                  <Mail className="w-6 h-6 text-accent group-hover:text-white transition-colors" />
+                </div>
+                <p className="text-xs uppercase tracking-widest text-white/40 font-semibold mb-3">Email</p>
+                <p className="text-2xl font-serif text-white mb-4">aria@arialanguageservices.com</p>
+                <p className="text-white/50 text-sm">For quotes, scheduling, and partnership inquiries.<br/>We respond within 2 business hours.</p>
+              </div>
+            </a>
+          </div>
+
+          <div className="mt-16 text-center">
+            <div className="inline-flex items-center gap-3 border border-white/10 px-8 py-4">
+              <MapPin className="w-4 h-4 text-accent" />
+              <span className="text-white/60 text-sm">Serving clients nationwide from Southern California</span>
+            </div>
           </div>
         </div>
       </section>
@@ -595,7 +607,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12 mb-12">
           <div className="md:col-span-2">
             <div className="flex items-center gap-4 mb-6">
-              <img src="/aria-logo.jpg" alt="Aria Logo" className="h-10 w-auto object-contain brightness-0 invert" />
+              <img src="/aria-logo-transparent.png" alt="Aria Logo" className="h-10 w-auto object-contain" />
               <div className="flex flex-col">
                 <span className="font-serif font-bold text-xl leading-none tracking-wide text-white">ARIA</span>
                 <span className="text-[10px] uppercase tracking-[0.2em] font-semibold mt-1 text-white/50">Language Services</span>
