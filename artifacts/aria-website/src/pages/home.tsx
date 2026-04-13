@@ -130,6 +130,13 @@ export default function Home() {
                 {item}
               </button>
             ))}
+            <a 
+              href="/leadership"
+              className={`text-sm font-medium tracking-wide transition-colors hover:text-primary ${isScrolled ? "text-foreground/80" : "text-white/90"}`}
+              data-testid="nav-leadership"
+            >
+              Leadership
+            </a>
           </nav>
 
           <div className="hidden lg:block">
@@ -174,6 +181,7 @@ export default function Home() {
                   {item}
                 </button>
               ))}
+              <a href="/leadership" className="text-left border-b border-border pb-4 hover:text-primary transition-colors">Leadership</a>
             </nav>
           </motion.div>
         )}
@@ -239,7 +247,7 @@ export default function Home() {
             <AnimatedCounter from={0} to={15000} suffix="+" label="Appointments Annually" />
             <AnimatedCounter from={0} to={100} suffix="+" label="Languages Supported" />
             <AnimatedCounter from={0} to={98} suffix=".7%" label="Client Satisfaction" />
-            <AnimatedCounter from={0} to={500} suffix="+" label="Certified Interpreters" />
+            <AnimatedCounter from={0} to={5000} suffix="+" label="Certified Interpreters" />
           </div>
         </div>
       </section>
@@ -374,15 +382,26 @@ export default function Home() {
       </section>
 
       {/* 7. CULTURAL COMPETENCY CALLOUT */}
-      <section className="bg-primary py-32 relative overflow-hidden flex items-center justify-center">
+      <section className="bg-primary py-32 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/cultural-abstract.png')] bg-cover bg-center opacity-10 mix-blend-multiply"></div>
         <div className="max-w-5xl mx-auto px-6 relative z-10 text-center">
           <motion.h2 
             initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
-            className="text-3xl md:text-5xl lg:text-6xl font-serif text-white leading-tight"
+            className="text-3xl md:text-5xl lg:text-6xl font-serif text-white leading-tight mb-10"
           >
             "Language services are only as good as the <span className="italic text-accent">cultural fluency</span> behind them."
           </motion.h2>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.3 }}
+            className="max-w-3xl mx-auto"
+          >
+            <p className="text-xl md:text-2xl text-white/80 leading-relaxed mb-8 font-light">
+              We go out of our way to create cultural matches between interpreters and clients — building long-term relationships that go far beyond just interpreting. When a patient sees the same culturally aligned interpreter visit after visit, trust deepens, communication improves, and outcomes change.
+            </p>
+            <p className="text-lg text-white/60 leading-relaxed">
+              This is what separates Aria from every other agency: we don't just fill a slot. We build connections that last — because the best interpretation happens when both parties feel truly understood.
+            </p>
+          </motion.div>
         </div>
       </section>
 
@@ -406,8 +425,8 @@ export default function Home() {
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-bl-full -z-10 group-hover:scale-150 transition-transform duration-700"></div>
               <h3 className="text-2xl font-serif mb-8 text-accent">Middle Eastern Core</h3>
               <div className="space-y-6 font-light">
+                <div><strong className="font-semibold text-white text-lg">Persian (Farsi)</strong><br/><span className="text-white/70">Dari, Tajik</span></div>
                 <div><strong className="font-semibold text-white text-lg">Arabic</strong><br/><span className="text-white/70">Egyptian, Levantine, Gulf/Khaleeji, Moroccan, Iraqi, Sudanese, Yemeni</span></div>
-                <div><strong className="font-semibold text-white text-lg">Persian/Farsi</strong><br/><span className="text-white/70">Dari, Tajik</span></div>
                 <div><strong className="font-semibold text-white text-lg">Kurdish</strong><br/><span className="text-white/70">Kurmanji, Sorani</span></div>
                 <div className="pt-4 border-t border-white/10"><strong className="font-semibold text-white text-lg">Pashto • Urdu • Turkish • Hebrew</strong></div>
               </div>
@@ -647,6 +666,7 @@ export default function Home() {
             <h5 className="text-white font-semibold uppercase tracking-widest text-xs mb-6">Firm</h5>
             <ul className="space-y-3 text-sm">
               <li><Link href="#about" className="hover:text-accent transition-colors">Our Story</Link></li>
+              <li><a href="/leadership" className="hover:text-accent transition-colors">Leadership</a></li>
               <li><Link href="#why-aria" className="hover:text-accent transition-colors">The Aria Standard</Link></li>
               <li><Link href="#languages" className="hover:text-accent transition-colors">Languages</Link></li>
               <li><Link href="#contact" className="hover:text-accent transition-colors">Contact</Link></li>
