@@ -631,6 +631,7 @@ export default function Home() {
             <ul className="space-y-3 text-sm">
               <li><Link href="#about" className="hover:text-accent transition-colors">Our Story</Link></li>
               <li><a href="/leadership" className="hover:text-accent transition-colors">Leadership</a></li>
+              <li><a href="/interpreter-expectations" className="hover:text-accent transition-colors">Interpreter Expectations</a></li>
               <li><Link href="#why-aria" className="hover:text-accent transition-colors">The Aria Standard</Link></li>
               <li><Link href="#languages" className="hover:text-accent transition-colors">Languages</Link></li>
               <li><Link href="#contact" className="hover:text-accent transition-colors">Contact</Link></li>
