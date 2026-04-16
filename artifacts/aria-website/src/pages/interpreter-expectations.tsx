@@ -66,9 +66,9 @@ const expectations = [
   },
   {
     icon: Clock,
-    title: "Timely Reporting (72 Hours)",
+    title: "Immediate Post-Appointment Reporting",
     description:
-      "Final appointment length and any additional authorized fees must be reported to Aria Language Services within 72 hours of completion of the assignment. Information received more than 72 hours after the assignment will be adjusted on the invoice to the Contracting Provider's minimum hourly rate.",
+      "Final appointment length and any additional authorized fees must be reported to Aria Language Services immediately after the appointment concludes. Prompt reporting ensures accurate billing and allows our coordination team to follow up with the requesting party without delay.",
   },
   {
     icon: Ban,
@@ -81,6 +81,12 @@ const expectations = [
     title: "Strict Confidentiality",
     description:
       "All information about the claimant — including any legal, medical, or financial matters — must be kept strictly confidential. Names, addresses, phone numbers, and any other identifying information are the property of Aria Language Services and must not be distributed for any purpose.",
+  },
+  {
+    icon: Ban,
+    title: "Zero-Tolerance Drug & Alcohol Policy",
+    description:
+      "Aria Language Services maintains a strict zero-tolerance policy regarding drug and alcohol use. Interpreters must never report to an assignment under the influence of any substance that could impair judgment, performance, or professionalism. Any violation will result in immediate and permanent removal from our interpreter roster, and any related incidents must be reported to Aria Language Services without delay.",
   },
 ];
 
