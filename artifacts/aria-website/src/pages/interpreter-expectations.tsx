@@ -14,6 +14,9 @@ import {
   Briefcase,
   Phone,
   Mail,
+  MessageCircle,
+  CalendarCheck,
+  LifeBuoy,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -41,16 +44,16 @@ const expectations = [
       "Interpreter must arrive at the appointment 15 minutes prior to the scheduled appointment time. Upon arrival, identify yourself as the Aria Language Services interpreter assigned to the claimant.",
   },
   {
-    icon: AlertTriangle,
-    title: "Immediate Issue Reporting",
+    icon: MessageCircle,
+    title: "Real-Time Updates & Issue Reporting",
     description:
-      "Interpreter must report any issues, delays, or changes regarding the assignment to Aria Language Services immediately. This includes any incidents involving the claimant or unexpected circumstances.",
+      "Interpreter must text Aria Language Services with the patient's arrival time, the session end time, and any issues, delays, or changes encountered along the way — including incidents involving the claimant or unexpected circumstances. Keeping us informed in real time allows our team to support you and the claimant at every step of the appointment.",
   },
   {
     icon: UserCheck,
     title: "No-Show Protocol",
     description:
-      "If the claimant fails to arrive within 15 minutes of the scheduled appointment, the Interpreter must notify Aria Language Services immediately. Aria Language Services must authorize the Interpreter to be released in order to guarantee payment of the no-show fee.",
+      "If the claimant does not arrive, the no-show must be reported to Aria Language Services before the Interpreter is released — this is what guarantees payment of the no-show fee. Under no circumstances should you leave the premises until the session has concluded successfully or you have received an official release. If you cannot reach our team, call the insurance company directly at +1 (949) 385-1807 to confirm release.",
   },
   {
     icon: ShieldCheck,
@@ -59,34 +62,46 @@ const expectations = [
       "Interpreter must maintain objectivity and impartiality at all times during an assignment. Communicate in a thorough and precise manner. Interpreters may only ask questions of the physician, case manager, or therapist that are posed by the claimant or one of the above parties.",
   },
   {
+    icon: CalendarCheck,
+    title: "Follow-Up Appointment Coordination",
+    description:
+      "It is critical that, at the conclusion of every session, the Interpreter assists the patient in scheduling any necessary follow-up appointments — and texts that date and time to Aria Language Services the moment it is confirmed. This ensures continuity of care and allows us to assign coverage promptly.",
+  },
+  {
     icon: FileText,
     title: "Authorization for Additional Fees",
     description:
-      "Any requests, services, or fees not listed on the original authorization must be reported to Aria Language Services for approval before proceeding. Failure to obtain pre-approval may result in non-payment for those services.",
+      "Any requests, services, or fees not listed on the original authorization must be reported to Aria Language Services for approval before proceeding. No fees outside of the agreed-upon rates will apply, and failure to obtain pre-approval may result in non-payment for those additional services.",
   },
   {
     icon: Clock,
-    title: "Immediate Post-Appointment Reporting",
+    title: "Post-Appointment Reporting (24 Hours)",
     description:
-      "Final appointment length and any additional authorized fees must be reported to Aria Language Services immediately after the appointment concludes. Prompt reporting ensures accurate billing and allows our coordination team to follow up with the requesting party without delay.",
+      "Final appointment length, any additional authorized fees, and any discrepancies must be received by Aria Language Services within 24 hours of completion of the assignment. Prompt reporting ensures accurate billing and timely follow-up with the requesting party.",
   },
   {
     icon: Ban,
-    title: "No Direct Payment Solicitation",
+    title: "No Direct Payment or Tips",
     description:
-      "The claimant — or any party other than Aria Language Services — shall not be asked for payment, tips, or gratuities. All rates and payment matters must be discussed exclusively with Aria Language Services.",
+      "The claimant — or any party other than Aria Language Services — shall not be asked for payment, tips, or gratuities of any kind. All rates and payment matters must be discussed exclusively with Aria Language Services.",
   },
   {
     icon: Lock,
     title: "Strict Confidentiality",
     description:
-      "All information about the claimant — including any legal, medical, or financial matters — must be kept strictly confidential. Names, addresses, phone numbers, and any other identifying information are the property of Aria Language Services and must not be distributed for any purpose.",
+      "All information about the claimant, including any legal or financial matters, must be kept strictly confidential. Names, addresses, phone numbers, and any other identifying information are the property of Aria Language Services and must not be distributed for any purpose.",
   },
   {
     icon: Ban,
     title: "Zero-Tolerance Drug & Alcohol Policy",
     description:
       "Aria Language Services maintains a strict zero-tolerance policy regarding drug and alcohol use. Interpreters must never report to an assignment under the influence of any substance that could impair judgment, performance, or professionalism. Any violation will result in immediate and permanent removal from our interpreter roster, and any related incidents must be reported to Aria Language Services without delay.",
+  },
+  {
+    icon: LifeBuoy,
+    title: "How to Escalate Issues",
+    description:
+      "For any issue that arises during an assignment, raise it in the Aria Language Services WhatsApp group and call any of the phone numbers listed there. You may also reach our main company line at any time by calling +1 (949) 385-1807. Always escalate before the session ends — never afterward.",
   },
 ];
 
