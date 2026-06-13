@@ -6,6 +6,8 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Leadership from "@/pages/leadership";
 import InterpreterExpectations from "@/pages/interpreter-expectations";
+import Careers from "@/pages/careers";
+import CareersApply from "@/pages/careers-apply";
 
 const queryClient = new QueryClient();
 
@@ -13,6 +15,8 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/careers/apply" component={CareersApply} />
+      <Route path="/careers" component={Careers} />
       <Route path="/leadership" component={Leadership} />
       <Route path="/interpreter-expectations" component={InterpreterExpectations} />
       <Route component={NotFound} />

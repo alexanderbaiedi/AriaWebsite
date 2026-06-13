@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: interpreter-applications
+    description: Interpreter application operations
 paths:
   /healthz:
     get:
@@ -24,6 +26,35 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /interpreter-applications:
+    post:
+      operationId: createInterpreterApplication
+      tags: [interpreter-applications]
+      summary: Submit an interpreter application
+      description: Sends a careers interpreter application to ARIA by email.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InterpreterApplicationRequest"
+      responses:
+        "201":
+          description: Application email sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InterpreterApplicationResponse"
+        "400":
+          description: Invalid application payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationErrorResponse"
+        "500":
+          description: Email is not configured
+        "502":
+          description: Email provider failed
 components:
   schemas:
     HealthStatus:
@@ -33,4 +64,39 @@ components:
           type: string
       required:
         - status
+    InterpreterApplicationRequest:
+      type: object
+      properties:
+        fullName:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        languages:
+          type: string
+      required:
+        - fullName
+        - phone
+        - email
+        - languages
+    InterpreterApplicationResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+      required:
+        - ok
+    ValidationErrorResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+        errors:
+          type: object
+          additionalProperties:
+            type: string
+      required:
+        - ok
+        - errors
 

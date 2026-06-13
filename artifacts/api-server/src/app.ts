@@ -1,6 +1,8 @@
 import express, { type Express } from "express";
 import cors from "cors";
 import pinoHttp from "pino-http";
+import { existsSync } from "node:fs";
+import path from "node:path";
 import router from "./routes";
 import { logger } from "./lib/logger";
 
@@ -30,5 +32,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", router);
+
+const publicDir = path.resolve(__dirname, "../../aria-website/dist/public");
+const indexHtmlPath = path.join(publicDir, "index.html");
+
+if (existsSync(publicDir)) {
+  app.use(express.static(publicDir));
+  app.use((req, res, next) => {
+    if ((req.method === "GET" || req.method === "HEAD") && req.accepts("html")) {
+      res.sendFile(indexHtmlPath);
+      return;
+    }
+
+    next();
+  });
+} else {
+  logger.warn({ publicDir }, "Static website build output was not found");
+}
 
 export default app;
