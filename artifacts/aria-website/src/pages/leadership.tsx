@@ -77,14 +77,14 @@ export default function Leadership() {
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           <a 
             href="/"
-            className="flex items-center gap-4 cursor-pointer group" 
+            className="flex items-center cursor-pointer group"
             data-testid="nav-logo"
           >
-            <img src="/aria-logo.jpg" alt="Aria Language Services Logo" className="h-10 w-auto object-contain transition-transform group-hover:scale-105" />
-            <div className="flex flex-col">
-              <span className={`font-serif font-bold text-xl leading-none tracking-wide ${isScrolled ? "text-foreground" : "text-white"}`}>ARIA</span>
-              <span className="text-[10px] uppercase tracking-[0.2em] font-semibold mt-1 text-primary">Language Services</span>
-            </div>
+            <img
+              src="/Aria_logo_transparent_clean.png"
+              alt="Aria Language Services"
+              className="h-16 w-auto max-w-[45vw] -my-3 object-contain transition-transform group-hover:scale-105 md:h-[72px] md:max-w-none md:-my-4"
+            />
           </a>
 
           <div className="hidden lg:flex items-center gap-8">
