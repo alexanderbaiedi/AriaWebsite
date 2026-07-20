@@ -137,7 +137,7 @@ export default function InterpreterExpectations() {
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           <a href="/" className="flex items-center cursor-pointer group" data-testid="nav-logo">
             <img
-              src="/Aria_logo_transparent_clean.png"
+              src="/aria_logo_new.png"
               alt="Aria Language Services"
               className="h-16 w-auto max-w-[45vw] -my-3 object-contain transition-transform group-hover:scale-105 md:h-[72px] md:max-w-none md:-my-4"
             />
@@ -323,7 +323,7 @@ export default function InterpreterExpectations() {
       <footer className="bg-[#0a0f1a] text-white/60 py-12 border-t border-white/10">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
           <div className="flex items-center gap-3">
-            <img src="/aria-logo-transparent.png" alt="Aria Logo" className="h-8 w-auto object-contain" />
+            <img src="/aria_logo_new.png" alt="Aria Logo" className="h-8 w-auto object-contain" />
             <span className="text-white/80">Aria Language Services</span>
           </div>
           <p>&copy; {new Date().getFullYear()} Aria Language Services. All rights reserved.</p>

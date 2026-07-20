@@ -110,7 +110,7 @@ export default function Home() {
             data-testid="nav-logo"
           >
             <img
-              src="/Aria_logo_transparent_clean.png"
+              src="/aria_logo_new.png"
               alt="Aria Language Services"
               className="h-16 w-auto max-w-[45vw] -my-3 object-contain transition-transform group-hover:scale-105 md:h-[72px] md:max-w-none md:-my-4"
             />
@@ -525,7 +525,7 @@ export default function Home() {
       <section id="about" className="py-32 bg-background">
         <div className="max-w-4xl mx-auto px-6">
           <div className="flex flex-col items-center text-center mb-16">
-            <img src="/aria-logo-transparent.png" alt="Aria Logo" className="w-16 h-16 object-contain mb-8" />
+            <img src="/aria_logo_new.png" alt="Aria Logo" className="w-16 h-16 object-contain mb-8" />
             <h2 className="text-4xl md:text-5xl font-serif text-foreground mb-6">Institutional Pedigree.<br/>Cultural Roots.</h2>
           </div>
 
@@ -607,7 +607,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12 mb-12">
           <div className="md:col-span-2">
             <div className="flex items-center gap-4 mb-6">
-              <img src="/aria-logo-transparent.png" alt="Aria Logo" className="h-10 w-auto object-contain" />
+              <img src="/aria_logo_new.png" alt="Aria Logo" className="h-10 w-auto object-contain" />
               <div className="flex flex-col">
                 <span className="font-serif font-bold text-xl leading-none tracking-wide text-white">ARIA</span>
                 <span className="text-[10px] uppercase tracking-[0.2em] font-semibold mt-1 text-white/50">Language Services</span>

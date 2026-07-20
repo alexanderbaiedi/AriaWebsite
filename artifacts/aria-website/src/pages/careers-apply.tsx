@@ -94,7 +94,7 @@ export default function CareersApply() {
         <div className="relative mx-auto flex min-h-[100dvh] max-w-7xl flex-col px-6 py-9 md:px-10">
           <header className="mb-10 flex items-start justify-between gap-8">
             <Link href="/" className="inline-flex" data-testid="careers-apply-logo">
-              <img src="/aria-logo-transparent.png" alt="Aria Language Services" className="h-16 w-auto object-contain brightness-0 invert md:h-[72px]" />
+              <img src="/aria_logo_new.png" alt="Aria Language Services" className="h-16 w-auto object-contain brightness-0 invert md:h-[72px]" />
             </Link>
 
             <Link

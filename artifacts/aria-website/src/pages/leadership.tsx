@@ -81,7 +81,7 @@ export default function Leadership() {
             data-testid="nav-logo"
           >
             <img
-              src="/Aria_logo_transparent_clean.png"
+              src="/aria_logo_new.png"
               alt="Aria Language Services"
               className="h-16 w-auto max-w-[45vw] -my-3 object-contain transition-transform group-hover:scale-105 md:h-[72px] md:max-w-none md:-my-4"
             />
@@ -192,7 +192,7 @@ export default function Leadership() {
       <footer className="bg-[#0a0f1a] text-white/60 py-16 border-t border-white/10">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-4">
-            <img src="/aria-logo.jpg" alt="Aria Logo" className="h-8 w-auto object-contain brightness-0 invert" />
+            <img src="/aria_logo_new.png" alt="Aria Logo" className="h-8 w-auto object-contain brightness-0 invert" />
             <span className="font-serif font-bold text-lg text-white">ARIA</span>
             <span className="text-white/40">|</span>
             <span className="font-serif italic text-white/60">We Speak Your Language.</span>

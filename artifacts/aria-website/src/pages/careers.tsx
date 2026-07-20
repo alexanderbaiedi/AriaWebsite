@@ -49,7 +49,7 @@ export default function Careers() {
         <div className="relative mx-auto max-w-7xl px-6 pb-16 pt-9 md:px-10 md:pb-20">
           <div className="mb-14 flex items-start justify-between gap-8">
             <Link href="/" className="inline-flex flex-col items-start" data-testid="careers-logo">
-              <img src="/aria-logo-transparent.png" alt="Aria Language Services" className="h-16 w-auto object-contain brightness-0 invert md:h-[72px]" />
+              <img src="/aria_logo_new.png" alt="Aria Language Services" className="h-16 w-auto object-contain brightness-0 invert md:h-[72px]" />
             </Link>
 
             <div className="mt-3 hidden items-center gap-4 rounded-full border border-[#d5a445] px-6 py-3 text-xs font-bold uppercase tracking-[0.36em] text-[#d5a445] md:flex">
@@ -181,7 +181,7 @@ export default function Careers() {
       <footer className="bg-[#c99a3c] text-[#06182d]">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-5 px-6 py-7 text-center md:flex-row md:px-10">
           <Link href="/" className="flex items-center gap-2">
-            <img src="/aria-logo-transparent.png" alt="Aria" className="h-9 w-auto object-contain brightness-0" />
+            <img src="/aria_logo_new.png" alt="Aria" className="h-9 w-auto object-contain brightness-0" />
           </Link>
           <p className="text-sm font-extrabold uppercase tracking-[0.32em]">Medical &middot; Legal &middot; Workers' Comp</p>
           <p className="text-sm font-extrabold uppercase tracking-[0.32em]">We Speak Your Language</p>
